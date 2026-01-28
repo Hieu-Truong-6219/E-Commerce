@@ -16,4 +16,5 @@ public class ProductDbContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Company> Companies { get; set; }
 }
