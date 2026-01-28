@@ -16,7 +16,7 @@ public class CompanyController(ICompanyService companyService) : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<CompanyDto>> GetAllCompanys()
+    public ActionResult<List<CompanyDto>> GetAllCompanies()
     {
         return Ok(_companyService.GetAllCompanies());
     }

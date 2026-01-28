@@ -33,7 +33,9 @@ public class ProductRepository(ProductDbContext context) : IProductRepository
         if (product == null)
             return null;
 
+        product.Company = info.Company;
         product.Name = info.Name;
+        product.Cost = info.Cost;
         product.Description = info.Description;
 
         await _context.SaveChangesAsync();

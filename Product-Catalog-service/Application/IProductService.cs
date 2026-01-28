@@ -7,5 +7,5 @@ public interface IProductService
     public List<CompanyProductsDto> GetAllCompanyProducts(int companyId);
     public ProductDto? GetProductDto(int productId);
     public Task<ProductDto?> UpdateProductAsync(int companyId, int productId, ProductDto info);
-    public Task<ProductDto?> DeleteProductAsync(int companyId, int productId);
+    public Task<ProductDto?> DeleteProductAsync(int productId);
 }

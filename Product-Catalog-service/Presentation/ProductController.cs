@@ -61,13 +61,10 @@ public class ProductController(
         return (product != null) ? Ok(product) : NotFound("Product not found");
     }
 
-    [HttpDelete("{companyId}/{productId}")]
-    public async Task<ActionResult<ProductDto>?> DeleteProductAsync(int companyId, int productId)
+    [HttpDelete("{productId}")]
+    public async Task<ActionResult<ProductDto>?> DeleteProductAsync(int productId)
     {
-        if (_companyValidationService.ValidateCompany(companyId))
-            return NotFound("Company not found");
-
-        var product = await _productService.DeleteProductAsync(companyId, productId);
+        var product = await _productService.DeleteProductAsync(productId);
         return (product != null) ? Ok(product) : NotFound("Product not found");
     }
 }

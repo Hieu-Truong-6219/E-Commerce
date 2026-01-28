@@ -52,7 +52,7 @@ public class ProductService(IProductRepository productRepository, ICompanyServic
         return (updatedProduct == null) ? null : updatedProduct.ToDto();
     }
 
-    public async Task<ProductDto?> DeleteProductAsync(int companyId, int productId)
+    public async Task<ProductDto?> DeleteProductAsync(int productId)
     {
         var deletedProduct = await _repo.DeleteProductAsync(productId);
         return (deletedProduct == null) ? null : deletedProduct.ToDto();
