@@ -3,7 +3,7 @@ namespace ProductCatalogMicroService.Domain;
 public class Product
 {
     public int Id { get; set; }
-    public Company Company { get; set; } = new Company();
+    public Company Company { get; set; } = null!;
     public string PublicHash { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public float Cost { get; set; }

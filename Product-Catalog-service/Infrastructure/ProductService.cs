@@ -1,4 +1,5 @@
 using ProductCatalogMicroService.Application;
+using ProductCatalogMicroService.Domain; // Using for testing. Delete.
 
 namespace ProductCatalogMicroService.Infrastructure;
 
@@ -10,14 +11,26 @@ public class ProductService(IProductRepository productRepository, ICompanyServic
 
     public async Task<ProductDto> CreateProductAsync(int companyId, ProductDto info)
     {
+        // Need to redo this. Calling GetCompanyDto maybe even referencing the company service causes an error.
         // Throwing error since validating company access should have been done before hand
         var companyDto =
             _companyService.GetCompanyDto(companyId)
             ?? throw new Exception("Invalid company provided");
+
         var company = companyDto.ToCompany(companyId);
         var product = info.ToProduct(company);
 
-        var createdProduct = await _repo.CreateProductAsync(product);
+        var createdProduct = await _repo.CreateProductAsync(
+            new Product()
+            {
+                Company = new Company() { Name = "testing" },
+                PublicHash = "",
+                Name = "testing",
+                Cost = 10,
+                Description = "please for the love of god work",
+            }
+        );
+
         return createdProduct.ToDto();
     }
 
@@ -28,9 +41,19 @@ public class ProductService(IProductRepository productRepository, ICompanyServic
         return products.Select(product => product.ToDto()).ToList();
     }
 
-    public List<CompanyProductsDto> GetAllCompanyProducts(int companyId)
+    public CompanyProductsDto GetAllCompanyProducts(int companyId)
     {
-        throw new NotImplementedException();
+        var companyDto =
+            _companyService.GetCompanyDto(companyId)
+            ?? throw new Exception("Invalid company provided");
+
+        var products = _repo.GetAllProducts().Where(product => product.Company.Id == companyId);
+
+        return new CompanyProductsDto()
+        {
+            Company = companyDto,
+            Products = products.Select(product => product.ToDto()).ToList(),
+        };
     }
 
     public ProductDto? GetProductDto(int id)

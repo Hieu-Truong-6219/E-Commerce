@@ -6,37 +6,37 @@ public class CompanyService(ICompanyRepository companyRepository) : ICompanyServ
 {
     private readonly ICompanyRepository _repo = companyRepository;
 
-    public async Task<CompanyDto> CreateCompanyAsync(CompanyDto company)
+    public async Task<CompanyDto> CreateCompanyAsync(CompanyDto info)
     {
-        var product = await _repo.CreateCompanyAsync(company.ToCompany());
-        return product.ToDto();
+        var company = await _repo.CreateCompanyAsync(info.ToCompany());
+        return company.ToDto();
     }
 
     public List<CompanyDto> GetAllCompanies()
     {
-        var products = _repo.GetAllCompanies();
+        var companies = _repo.GetAllCompanies();
 
-        return products.Select(product => product.ToDto()).ToList();
+        return companies.Select(company => company.ToDto()).ToList();
     }
 
     public CompanyDto? GetCompanyDto(int id)
     {
-        var product = _repo.GetCompany(id);
+        var company = _repo.GetCompany(id);
 
-        return (product == null) ? null : product.ToDto();
+        return (company == null) ? null : company.ToDto();
     }
 
     public async Task<CompanyDto?> UpdateCompanyAsync(int id, CompanyDto info)
     {
-        var product = await _repo.UpdateCompanyAsync(info.ToCompany(id));
+        var company = await _repo.UpdateCompanyAsync(info.ToCompany(id));
 
-        return (product == null) ? null : product.ToDto();
+        return (company == null) ? null : company.ToDto();
     }
 
     public async Task<CompanyDto?> DeleteCompanyAsync(int id)
     {
-        var product = await _repo.DeleteCompanyAsync(id);
+        var company = await _repo.DeleteCompanyAsync(id);
 
-        return (product == null) ? null : product.ToDto();
+        return (company == null) ? null : company.ToDto();
     }
 }

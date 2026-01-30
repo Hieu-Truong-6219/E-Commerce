@@ -16,7 +16,7 @@ public class ProductController(
     [HttpPost("{companyId}")]
     public async Task<ActionResult<ProductDto>> CreateProductAsync(int companyId, ProductDto info)
     {
-        if (_companyValidationService.ValidateCompany(companyId))
+        if (_companyValidationService.ValidateCompany(companyId) == false)
             return NotFound("Company not found");
 
         return Ok(await _productService.CreateProductAsync(companyId, info));
@@ -29,9 +29,9 @@ public class ProductController(
     }
 
     [HttpGet("{companyId}")]
-    public ActionResult<List<CompanyProductsDto>> GetAllCompanyProducts(int companyId)
+    public ActionResult<CompanyProductsDto> GetAllCompanyProducts(int companyId)
     {
-        if (_companyValidationService.ValidateCompany(companyId))
+        if (_companyValidationService.ValidateCompany(companyId) == false)
             return NotFound("Company not found");
 
         return Ok(_productService.GetAllCompanyProducts(companyId));
@@ -40,7 +40,7 @@ public class ProductController(
     [HttpGet("{companyId}/{productId}")]
     public ActionResult<ProductDto>? GetProductDto(int companyId, int productId)
     {
-        if (_companyValidationService.ValidateCompany(companyId))
+        if (_companyValidationService.ValidateCompany(companyId) == false)
             return NotFound("Company not found");
 
         var product = _productService.GetProductDto(productId);
@@ -54,7 +54,7 @@ public class ProductController(
         ProductDto info
     )
     {
-        if (_companyValidationService.ValidateCompany(companyId))
+        if (_companyValidationService.ValidateCompany(companyId) == false)
             return NotFound("Company not found");
 
         var product = await _productService.UpdateProductAsync(companyId, productId, info);
