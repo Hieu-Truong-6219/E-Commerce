@@ -12,12 +12,18 @@ public class LoginRegisterController(ILoginRegisterService loginService) : Contr
     [HttpGet("login")]
     public ActionResult<string> Login(UserLoginCredentialDto credentials)
     {
-        return Ok(_loginService.LoginUser(credentials));
+        var jwt = _loginService.LoginUser(credentials);
+        if (jwt == null)
+            return Unauthorized("Incorrect email or password");
+        return Ok(jwt);
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<string>> Register(UserRegisterCredentialDto credentials)
     {
-        return Ok(await _loginService.RegisterUserAsync(credentials));
+        var jwt = await _loginService.RegisterUserAsync(credentials);
+        if (jwt == null)
+            return Conflict("Email exists");
+        return Ok(jwt);
     }
 }

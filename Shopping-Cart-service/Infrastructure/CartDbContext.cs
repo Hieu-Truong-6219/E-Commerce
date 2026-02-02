@@ -11,7 +11,7 @@ public class CartDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(
-            "server=localhost;database=msdb;User Id=sa;Password=12345678@aA;TrustServerCertificate=True;"
+            "server=mssql;database=msdb;User Id=sa;Password=12345678@aA;TrustServerCertificate=True;"
         );
     }
 

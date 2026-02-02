@@ -1,0 +1,33 @@
+services:
+  mssqlDb:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    hostname: mssql
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: 12345678@aA
+
+  user-service:
+    build:
+      context: ./User-service
+      dockerfile: dockerfile
+    ports:
+      - "8001:8080"
+    post_start:
+      - command: dotnet ef database update
+    depends_on:
+      mssqlDb:
+        condition: service_started
+
+  product-catalog-service:
+    build:
+      context: ./Product-Catalog-service
+      dockerfile: dockerfile
+    ports:
+      - "8002:8080"
+    post_start:
+      - command: dotnet ef database update
+    depends_on:
+      mssqlDb:
+        condition: service_started

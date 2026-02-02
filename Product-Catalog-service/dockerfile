@@ -1,0 +1,19 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+WORKDIR /app
+
+COPY ./Product-Catalog-service.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet tool install dotnet-ef
+RUN dotnet publish
+# RUN dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+# RUN dotnet add package Microsoft.EntityFrameworkCore.Design
+# # RUN dotnet dev-certs https --clean
+# RUN dotnet dev-certs https
+# RUN dotnet dev-certs https --trust
+
+EXPOSE 8080
+
+# CMD ["dotnet", "run", "--launch-profile", "https"]
+ENTRYPOINT ["dotnet", "./bin/Release/net10.0/Product-Catalog-service.dll"]

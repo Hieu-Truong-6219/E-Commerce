@@ -9,26 +9,26 @@ public class LoginRegisterService(IUserService userService, IPasswordHashService
     private readonly IUserService _userService = userService;
     private readonly IPasswordHashService _hashService = hashService;
 
-    public string LoginUser(UserLoginCredentialDto credentials)
+    public string? LoginUser(UserLoginCredentialDto credentials)
     {
         List<UserInfoDto> users = _userService.GetAllUsers();
         var foundUser = users.FirstOrDefault(user => user.Email == credentials.Email);
 
         if (foundUser == null)
-            return "Failed";
+            return null;
 
         if (_hashService.VerifyHash(foundUser.Password, credentials.Password) == false)
-            return "Failed";
+            return null;
 
         return "JWT ID Token";
     }
 
-    public async Task<string> RegisterUserAsync(UserRegisterCredentialDto credentials)
+    public async Task<string?> RegisterUserAsync(UserRegisterCredentialDto credentials)
     {
         List<UserInfoDto> users = _userService.GetAllUsers();
 
         if (users.FirstOrDefault(user => user.Email == credentials.Email) != null)
-            return "Existing email found";
+            return null;
 
         // More checks here
 
