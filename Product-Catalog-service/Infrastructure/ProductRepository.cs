@@ -7,12 +7,16 @@ public class ProductRepository(ProductDbContext context) : IProductRepository
 {
     private readonly ProductDbContext _context = context;
 
-    public async Task<Product> CreateProductAsync(Product info)
+    public async Task<Product> CreateProductAsync(Company company, Product info)
     {
-        var result = _context.Products.Add(info);
+        // company.Products.Add(info);
+        info.Company = company;
+        var result = await _context.Products.AddAsync(info);
+        // var result = _context.Products.Add(info);
 
         await _context.SaveChangesAsync();
 
+        // return info;
         return result.Entity;
     }
 

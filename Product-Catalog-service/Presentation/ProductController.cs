@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductCatalogMicroService.Application;
+using ProductCatalogMicroService.Domain;
 
 namespace ProductCatalogMicroService.Presentation;
 
@@ -16,7 +18,7 @@ public class ProductController(
     [HttpPost("{companyId}")]
     public async Task<ActionResult<ProductDto>> CreateProductAsync(int companyId, ProductDto info)
     {
-        if (_companyValidationService.ValidateCompany(companyId) == false)
+        if (await _companyValidationService.ValidateCompanyAsync(companyId) == false)
             return NotFound("Company not found");
 
         return Ok(await _productService.CreateProductAsync(companyId, info));
@@ -29,18 +31,18 @@ public class ProductController(
     }
 
     [HttpGet("{companyId}")]
-    public ActionResult<CompanyProductsDto> GetAllCompanyProducts(int companyId)
+    public async Task<ActionResult<CompanyProductsDto>> GetAllCompanyProducts(int companyId)
     {
-        if (_companyValidationService.ValidateCompany(companyId) == false)
+        if (await _companyValidationService.ValidateCompanyAsync(companyId) == false)
             return NotFound("Company not found");
 
-        return Ok(_productService.GetAllCompanyProducts(companyId));
+        return Ok(await _productService.GetAllCompanyProductsAsync(companyId));
     }
 
     [HttpGet("{companyId}/{productId}")]
-    public ActionResult<ProductDto>? GetProductDto(int companyId, int productId)
+    public async Task<ActionResult<ProductDto>?> GetProductDto(int companyId, int productId)
     {
-        if (_companyValidationService.ValidateCompany(companyId) == false)
+        if (await _companyValidationService.ValidateCompanyAsync(companyId) == false)
             return NotFound("Company not found");
 
         var product = _productService.GetProductDto(productId);
@@ -54,7 +56,7 @@ public class ProductController(
         ProductDto info
     )
     {
-        if (_companyValidationService.ValidateCompany(companyId) == false)
+        if (await _companyValidationService.ValidateCompanyAsync(companyId) == false)
             return NotFound("Company not found");
 
         var product = await _productService.UpdateProductAsync(companyId, productId, info);

@@ -4,5 +4,5 @@ namespace ProductCatalogMicroService.Application;
 
 public interface ICompanyValidationService
 {
-    public bool ValidateCompany(int id);
+    public Task<bool> ValidateCompanyAsync(int id);
 }

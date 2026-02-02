@@ -5,8 +5,8 @@ namespace ProductCatalogMicroService.Application;
 public interface ICompanyRepository
 {
     public Task<Company> CreateCompanyAsync(Company info);
-    public List<Company> GetAllCompanies();
-    public Company? GetCompany(int id);
+    public Task<List<Company>> GetAllCompaniesAsync();
+    public Task<Company?> GetCompanyAsync(int id);
     public Task<Company?> UpdateCompanyAsync(Company info);
     public Task<Company?> DeleteCompanyAsync(int id);
 }

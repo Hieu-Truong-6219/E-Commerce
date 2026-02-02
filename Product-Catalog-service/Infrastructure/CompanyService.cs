@@ -12,16 +12,16 @@ public class CompanyService(ICompanyRepository companyRepository) : ICompanyServ
         return company.ToDto();
     }
 
-    public List<CompanyDto> GetAllCompanies()
+    public async Task<List<CompanyDto>> GetAllCompaniesAsync()
     {
-        var companies = _repo.GetAllCompanies();
+        var companies = await _repo.GetAllCompaniesAsync();
 
         return companies.Select(company => company.ToDto()).ToList();
     }
 
-    public CompanyDto? GetCompanyDto(int id)
+    public async Task<CompanyDto?> GetCompanyDtoAsync(int id)
     {
-        var company = _repo.GetCompany(id);
+        var company = await _repo.GetCompanyAsync(id);
 
         return (company == null) ? null : company.ToDto();
     }

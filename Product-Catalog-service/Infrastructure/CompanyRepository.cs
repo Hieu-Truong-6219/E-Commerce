@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ProductCatalogMicroService.Application;
 using ProductCatalogMicroService.Domain;
 
@@ -16,14 +17,14 @@ public class CompanyRepository(ProductDbContext context) : ICompanyRepository
         return result.Entity;
     }
 
-    public List<Company> GetAllCompanies()
+    public async Task<List<Company>> GetAllCompaniesAsync()
     {
-        return _context.Companies.ToList();
+        return await _context.Companies.ToListAsync();
     }
 
-    public Company? GetCompany(int id)
+    public async Task<Company?> GetCompanyAsync(int id)
     {
-        return _context.Companies.Find(id);
+        return await _context.Companies.FindAsync(id);
     }
 
     public async Task<Company?> UpdateCompanyAsync(Company info)

@@ -16,15 +16,15 @@ public class CompanyController(ICompanyService companyService) : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<CompanyDto>> GetAllCompanies()
+    public async Task<ActionResult<List<CompanyDto>>> GetAllCompanies()
     {
-        return Ok(_companyService.GetAllCompanies());
+        return Ok(await _companyService.GetAllCompaniesAsync());
     }
 
     [HttpGet("{id}")]
-    public ActionResult<CompanyDto>? GetCompanyDto(int id)
+    public async Task<ActionResult<CompanyDto>?> GetCompanyDto(int id)
     {
-        return Ok(_companyService.GetCompanyDto(id));
+        return Ok(await _companyService.GetCompanyDtoAsync(id));
     }
 
     [HttpPut("{id}")]

@@ -3,33 +3,23 @@ using ProductCatalogMicroService.Domain; // Using for testing. Delete.
 
 namespace ProductCatalogMicroService.Infrastructure;
 
-public class ProductService(IProductRepository productRepository, ICompanyService companyService)
-    : IProductService
+public class ProductService(
+    IProductRepository productRepository,
+    ICompanyRepository companyRepository
+) : IProductService
 {
     private readonly IProductRepository _repo = productRepository;
-    private readonly ICompanyService _companyService = companyService;
+    private readonly ICompanyRepository _companyRepository = companyRepository;
 
     public async Task<ProductDto> CreateProductAsync(int companyId, ProductDto info)
     {
-        // Need to redo this. Calling GetCompanyDto maybe even referencing the company service causes an error.
         // Throwing error since validating company access should have been done before hand
-        var companyDto =
-            _companyService.GetCompanyDto(companyId)
-            ?? throw new Exception("Invalid company provided");
-
-        var company = companyDto.ToCompany(companyId);
+        var company =
+            await _companyRepository.GetCompanyAsync(companyId)
+            ?? throw new Exception("Invalid company Id given");
         var product = info.ToProduct(company);
 
-        var createdProduct = await _repo.CreateProductAsync(
-            new Product()
-            {
-                Company = new Company() { Name = "testing" },
-                PublicHash = "",
-                Name = "testing",
-                Cost = 10,
-                Description = "please for the love of god work",
-            }
-        );
+        var createdProduct = await _repo.CreateProductAsync(company, product);
 
         return createdProduct.ToDto();
     }
@@ -41,17 +31,16 @@ public class ProductService(IProductRepository productRepository, ICompanyServic
         return products.Select(product => product.ToDto()).ToList();
     }
 
-    public CompanyProductsDto GetAllCompanyProducts(int companyId)
+    public async Task<CompanyProductsDto> GetAllCompanyProductsAsync(int companyId)
     {
-        var companyDto =
-            _companyService.GetCompanyDto(companyId)
-            ?? throw new Exception("Invalid company provided");
-
+        var company =
+            await _companyRepository.GetCompanyAsync(companyId)
+            ?? throw new Exception("Invalid company Id given");
         var products = _repo.GetAllProducts().Where(product => product.Company.Id == companyId);
 
         return new CompanyProductsDto()
         {
-            Company = companyDto,
+            Company = company.ToDto(),
             Products = products.Select(product => product.ToDto()).ToList(),
         };
     }
@@ -65,13 +54,12 @@ public class ProductService(IProductRepository productRepository, ICompanyServic
 
     public async Task<ProductDto?> UpdateProductAsync(int companyId, int productId, ProductDto info)
     {
-        var companyDto =
-            _companyService.GetCompanyDto(companyId)
-            ?? throw new Exception("Invalid company provided");
-        var company = companyDto.ToCompany(companyId);
+        var company =
+            await _companyRepository.GetCompanyAsync(companyId)
+            ?? throw new Exception("Invalid company Id given");
         var product = info.ToProduct(company);
 
-        var updatedProduct = await _repo.CreateProductAsync(product);
+        var updatedProduct = await _repo.UpdateProductAsync(product);
         return (updatedProduct == null) ? null : updatedProduct.ToDto();
     }
 
