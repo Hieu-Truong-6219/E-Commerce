@@ -24,6 +24,13 @@ public class LoginRegisterService(
         if (_hashService.VerifyHash(foundUser.Password, credentials.Password) == false)
             return null;
 
+        var userAccessToken = _accessTokenService.GenerateAccessToken(
+            new AccessTokenInfo(
+                Environment.GetEnvironmentVariable("USER_MICROSERVICE")
+                    ?? throw new Exception("User microservice endpoint not found"),
+                foundUser.Uuid
+            )
+        );
         var cartAccessToken = _accessTokenService.GenerateAccessToken(
             new AccessTokenInfo(
                 Environment.GetEnvironmentVariable("CART_MICROSERVICE")
@@ -32,7 +39,7 @@ public class LoginRegisterService(
             )
         );
 
-        return cartAccessToken;
+        return userAccessToken;
     }
 
     public async Task<string?> RegisterUserAsync(UserRegisterCredentialDto credentials)
