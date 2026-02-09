@@ -9,6 +9,7 @@ public static class ModelExtensions
         return new UserInfoDto
         {
             Uuid = info.Uuid,
+            Role = info.Role,
             Email = info.Email,
             Username = info.Username,
             Password = info.Password,
@@ -21,6 +22,7 @@ public static class ModelExtensions
         {
             Id = id,
             Uuid = uuid,
+            Role = dto.Role,
             Email = dto.Email,
             Username = dto.Username,
             Password = dto.Password,

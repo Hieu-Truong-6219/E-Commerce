@@ -1,3 +1,5 @@
+// Essentially just for testing. Very unsecure, should disable on production.
+
 using Microsoft.AspNetCore.Mvc;
 using UserMicroService.Application;
 

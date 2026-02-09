@@ -3,11 +3,15 @@ using UserMicroService.Domain;
 
 namespace UserMicroService.Infrastructure;
 
-public class LoginRegisterService(IUserService userService, IPasswordHashService hashService)
-    : ILoginRegisterService
+public class LoginRegisterService(
+    IUserService userService,
+    IPasswordHashService hashService,
+    IAccessTokenService accessTokenService
+) : ILoginRegisterService
 {
     private readonly IUserService _userService = userService;
     private readonly IPasswordHashService _hashService = hashService;
+    private readonly IAccessTokenService _accessTokenService = accessTokenService;
 
     public async Task<string?> LoginUserAsync(UserLoginCredentialDto credentials)
     {
@@ -20,7 +24,15 @@ public class LoginRegisterService(IUserService userService, IPasswordHashService
         if (_hashService.VerifyHash(foundUser.Password, credentials.Password) == false)
             return null;
 
-        return "JWT ID Token";
+        var cartAccessToken = _accessTokenService.GenerateAccessToken(
+            new AccessTokenInfo(
+                Environment.GetEnvironmentVariable("CART_MICROSERVICE")
+                    ?? throw new Exception("Cart microservice endpoint not found"),
+                foundUser.Uuid
+            )
+        );
+
+        return cartAccessToken;
     }
 
     public async Task<string?> RegisterUserAsync(UserRegisterCredentialDto credentials)
@@ -30,7 +42,7 @@ public class LoginRegisterService(IUserService userService, IPasswordHashService
         if (users.FirstOrDefault(user => user.Email == credentials.Email) != null)
             return null;
 
-        // More checks here
+        // TODO: More checks here
 
         UserInfoDto userInfo = new()
         {
@@ -39,8 +51,16 @@ public class LoginRegisterService(IUserService userService, IPasswordHashService
             Password = _hashService.Hash(credentials.Password),
         };
 
-        await _userService.CreateUserAsync(userInfo);
+        var createdUser = await _userService.CreateUserAsync(userInfo);
 
-        return "JWT ID Token";
+        var cartAccessToken = _accessTokenService.GenerateAccessToken(
+            new AccessTokenInfo(
+                Environment.GetEnvironmentVariable("CART_MICROSERVICE")
+                    ?? throw new Exception("Cart microservice endpoint not found"),
+                createdUser.Uuid
+            )
+        );
+
+        return cartAccessToken;
     }
 }
