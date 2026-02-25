@@ -1,8 +1,8 @@
-namespace UserMicroService.Application;
+namespace User_service.Application;
 
 public interface ILoginRegisterService
 {
     // TODO: Returning string temporarily. Need to return ID JWT
-    public Task<string?> LoginUserAsync(UserLoginCredentialDto credentials);
-    public Task<string?> RegisterUserAsync(UserRegisterCredentialDto credentials);
+    public Task<AccessTokensDto?> LoginUserAsync(UserLoginCredentialDto credentials);
+    public Task<AccessTokensDto?> RegisterUserAsync(UserRegisterCredentialDto credentials);
 }

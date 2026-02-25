@@ -1,4 +1,4 @@
-namespace UserMicroService.Domain;
+namespace User_service.Domain;
 
 public class UserInfo
 {

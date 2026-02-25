@@ -21,6 +21,7 @@ services:
       INTERNAL_TOKEN_AUDIENCE: ${INTERNAL_TOKEN_AUDEINCE}
       TOKEN_ISSUER: ${TOKEN_ISSUER}
       ACCESS_TOKEN_SECRET_KEY: ${ACCESS_TOKEN_SECRET_KEY}
+      JWT_MICROSERVICE: ${JWT_MICROSERVICE}
 
   user-service:
     build:
@@ -34,8 +35,10 @@ services:
       mssqlDb:
         condition: service_started
     environment:
+      JWT_MICROSERVICE: ${JWT_MICROSERVICE}
       USER_MICROSERVICE: ${USER_MICROSERVICE}
       CART_MICROSERVICE: ${CART_MICROSERVICE}
+      ACCESS_TOKEN_SECRET_KEY: ${ACCESS_TOKEN_SECRET_KEY}
 
   product-catalog-service:
     build:
@@ -43,6 +46,18 @@ services:
       dockerfile: dockerfile
     ports:
       - "${PRODUCT_MICROSERVICE_PORT}:8080"
+    post_start:
+      - command: dotnet ef database update
+    depends_on:
+      mssqlDb:
+        condition: service_started
+
+  shopping-cart-service:
+    build:
+      context: ./Shopping-Cart-service
+      dockerfile: dockerfile
+    ports:
+      - "${CART_MICROSERVICE_PORT}:8080"
     post_start:
       - command: dotnet ef database update
     depends_on:

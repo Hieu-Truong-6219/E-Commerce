@@ -1,7 +1,7 @@
-using UserMicroService.Application;
-using UserMicroService.Domain;
+using User_service.Application;
+using User_service.Domain;
 
-namespace UserMicroService.Infrastructure;
+namespace User_service.Infrastructure;
 
 public class LoginRegisterService(
     IUserService userService,
@@ -13,7 +13,7 @@ public class LoginRegisterService(
     private readonly IPasswordHashService _hashService = hashService;
     private readonly IAccessTokenService _accessTokenService = accessTokenService;
 
-    public async Task<string?> LoginUserAsync(UserLoginCredentialDto credentials)
+    public async Task<AccessTokensDto?> LoginUserAsync(UserLoginCredentialDto credentials)
     {
         List<UserInfoDto> users = await _userService.GetAllUsersAsync();
         var foundUser = users.FirstOrDefault(user => user.Email == credentials.Email);
@@ -24,14 +24,14 @@ public class LoginRegisterService(
         if (_hashService.VerifyHash(foundUser.Password, credentials.Password) == false)
             return null;
 
-        var userAccessToken = _accessTokenService.GenerateAccessToken(
+        var userAccessToken = await _accessTokenService.GenerateAccessTokenAsync(
             new AccessTokenInfo(
                 Environment.GetEnvironmentVariable("USER_MICROSERVICE")
                     ?? throw new Exception("User microservice endpoint not found"),
                 foundUser.Uuid
             )
         );
-        var cartAccessToken = _accessTokenService.GenerateAccessToken(
+        var cartAccessToken = await _accessTokenService.GenerateAccessTokenAsync(
             new AccessTokenInfo(
                 Environment.GetEnvironmentVariable("CART_MICROSERVICE")
                     ?? throw new Exception("Cart microservice endpoint not found"),
@@ -39,10 +39,10 @@ public class LoginRegisterService(
             )
         );
 
-        return userAccessToken;
+        return new AccessTokensDto(userAccessToken, cartAccessToken);
     }
 
-    public async Task<string?> RegisterUserAsync(UserRegisterCredentialDto credentials)
+    public async Task<AccessTokensDto?> RegisterUserAsync(UserRegisterCredentialDto credentials)
     {
         List<UserInfoDto> users = await _userService.GetAllUsersAsync();
 
@@ -60,7 +60,14 @@ public class LoginRegisterService(
 
         var createdUser = await _userService.CreateUserAsync(userInfo);
 
-        var cartAccessToken = _accessTokenService.GenerateAccessToken(
+        var userAccessToken = await _accessTokenService.GenerateAccessTokenAsync(
+            new AccessTokenInfo(
+                Environment.GetEnvironmentVariable("USER_MICROSERVICE")
+                    ?? throw new Exception("User microservice endpoint not found"),
+                createdUser.Uuid
+            )
+        );
+        var cartAccessToken = await _accessTokenService.GenerateAccessTokenAsync(
             new AccessTokenInfo(
                 Environment.GetEnvironmentVariable("CART_MICROSERVICE")
                     ?? throw new Exception("Cart microservice endpoint not found"),
@@ -68,6 +75,6 @@ public class LoginRegisterService(
             )
         );
 
-        return cartAccessToken;
+        return new AccessTokensDto(userAccessToken, cartAccessToken);
     }
 }

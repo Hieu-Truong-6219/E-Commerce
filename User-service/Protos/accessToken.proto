@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Jwt_service";
+option csharp_namespace = "User_service";
 
 package greet;
 

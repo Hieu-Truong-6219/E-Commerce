@@ -1,6 +1,6 @@
-using UserMicroService.Domain;
+using User_service.Domain;
 
-namespace UserMicroService.Application;
+namespace User_service.Application;
 
 public class UserInfoDto
 {
@@ -23,3 +23,5 @@ public class UserRegisterCredentialDto
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 }
+
+public record AccessTokensDto(string UserToken, string CartToken);

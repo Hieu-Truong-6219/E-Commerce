@@ -1,8 +1,8 @@
 using Isopoh.Cryptography.Argon2;
-using UserMicroService.Application;
-using UserMicroService.Domain;
+using User_service.Application;
+using User_service.Domain;
 
-namespace UserMicroService.Infrastructure;
+namespace User_service.Infrastructure;
 
 public class PasswordHashService : IPasswordHashService
 {

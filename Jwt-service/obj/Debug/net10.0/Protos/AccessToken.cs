@@ -24,15 +24,15 @@ namespace Jwt_service {
     static AccessTokenReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChhQcm90b3MvYWNjZXNzVG9rZW4ucHJvdG8SBWdyZWV0IhsKDFRva2VuUmVx",
-            "dWVzdBILCgNhdWQYASABKAkiIQoQU2lnbmVkVG9rZW5SZXBseRINCgV0b2tl",
-            "bhgBIAEoCTJOCgtBY2Nlc3NUb2tlbhI/Cg9TaWduQWNjZXNzVG9rZW4SEy5n",
-            "cmVldC5Ub2tlblJlcXVlc3QaFy5ncmVldC5TaWduZWRUb2tlblJlcGx5Qg6q",
-            "AgtKd3Rfc2VydmljZWIGcHJvdG8z"));
+            "ChhQcm90b3MvYWNjZXNzVG9rZW4ucHJvdG8SBWdyZWV0IigKDFRva2VuUmVx",
+            "dWVzdBILCgNhdWQYASABKAkSCwoDc3ViGAIgASgJIiEKEFNpZ25lZFRva2Vu",
+            "UmVwbHkSDQoFdG9rZW4YASABKAkyTgoLQWNjZXNzVG9rZW4SPwoPU2lnbkFj",
+            "Y2Vzc1Rva2VuEhMuZ3JlZXQuVG9rZW5SZXF1ZXN0GhcuZ3JlZXQuU2lnbmVk",
+            "VG9rZW5SZXBseUIOqgILSnd0X3NlcnZpY2ViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Jwt_service.TokenRequest), global::Jwt_service.TokenRequest.Parser, new[]{ "Aud" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Jwt_service.TokenRequest), global::Jwt_service.TokenRequest.Parser, new[]{ "Aud", "Sub" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Jwt_service.SignedTokenReply), global::Jwt_service.SignedTokenReply.Parser, new[]{ "Token" }, null, null, null, null)
           }));
     }
@@ -76,6 +76,7 @@ namespace Jwt_service {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TokenRequest(TokenRequest other) : this() {
       aud_ = other.aud_;
+      sub_ = other.sub_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -97,6 +98,18 @@ namespace Jwt_service {
       }
     }
 
+    /// <summary>Field number for the "sub" field.</summary>
+    public const int SubFieldNumber = 2;
+    private string sub_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Sub {
+      get { return sub_; }
+      set {
+        sub_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -113,6 +126,7 @@ namespace Jwt_service {
         return true;
       }
       if (Aud != other.Aud) return false;
+      if (Sub != other.Sub) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -121,6 +135,7 @@ namespace Jwt_service {
     public override int GetHashCode() {
       int hash = 1;
       if (Aud.Length != 0) hash ^= Aud.GetHashCode();
+      if (Sub.Length != 0) hash ^= Sub.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -143,6 +158,10 @@ namespace Jwt_service {
         output.WriteRawTag(10);
         output.WriteString(Aud);
       }
+      if (Sub.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Sub);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -157,6 +176,10 @@ namespace Jwt_service {
         output.WriteRawTag(10);
         output.WriteString(Aud);
       }
+      if (Sub.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Sub);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -169,6 +192,9 @@ namespace Jwt_service {
       int size = 0;
       if (Aud.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Aud);
+      }
+      if (Sub.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Sub);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -184,6 +210,9 @@ namespace Jwt_service {
       }
       if (other.Aud.Length != 0) {
         Aud = other.Aud;
+      }
+      if (other.Sub.Length != 0) {
+        Sub = other.Sub;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -208,6 +237,10 @@ namespace Jwt_service {
             Aud = input.ReadString();
             break;
           }
+          case 18: {
+            Sub = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -229,6 +262,10 @@ namespace Jwt_service {
             break;
           case 10: {
             Aud = input.ReadString();
+            break;
+          }
+          case 18: {
+            Sub = input.ReadString();
             break;
           }
         }

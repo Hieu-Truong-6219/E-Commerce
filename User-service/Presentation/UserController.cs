@@ -1,9 +1,9 @@
 // Essentially just for testing. Very unsecure, should disable on production.
 
 using Microsoft.AspNetCore.Mvc;
-using UserMicroService.Application;
+using User_service.Application;
 
-namespace UserMicroService.Presentation;
+namespace User_service.Presentation;
 
 [ApiController]
 [Route("[controller]")]

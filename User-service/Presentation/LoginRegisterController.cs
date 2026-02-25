@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using UserMicroService.Application;
+using User_service.Application;
 
-namespace UserMicroService.Presentation;
+namespace User_service.Presentation;
 
 [ApiController]
 [Route("")]
@@ -10,7 +10,7 @@ public class LoginRegisterController(ILoginRegisterService loginService) : Contr
     private readonly ILoginRegisterService _loginService = loginService;
 
     [HttpGet("login")]
-    public async Task<ActionResult<string>> Login(UserLoginCredentialDto credentials)
+    public async Task<ActionResult<AccessTokensDto>> Login(UserLoginCredentialDto credentials)
     {
         var jwt = await _loginService.LoginUserAsync(credentials);
         if (jwt == null)
@@ -19,7 +19,7 @@ public class LoginRegisterController(ILoginRegisterService loginService) : Contr
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<string>> Register(UserRegisterCredentialDto credentials)
+    public async Task<ActionResult<AccessTokensDto>> Register(UserRegisterCredentialDto credentials)
     {
         var jwt = await _loginService.RegisterUserAsync(credentials);
         if (jwt == null)

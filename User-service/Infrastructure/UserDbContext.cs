@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using UserMicroService.Domain;
+using User_service.Domain;
 
-namespace UserMicroService.Infrastructure;
+namespace User_service.Infrastructure;
 
 public class UserDbContext : DbContext
 {

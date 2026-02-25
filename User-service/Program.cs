@@ -3,9 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using UserMicroService.Application;
-using UserMicroService.Infrastructure;
-using UserMicroService.Presentation;
+using User_service.Application;
+using User_service.Infrastructure;
+using User_service.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +33,8 @@ builder
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer =
-                Environment.GetEnvironmentVariable("USER_MICROSERVICE")
-                ?? throw new Exception("User microservice endpoint not found"),
+                Environment.GetEnvironmentVariable("JWT_MICROSERVICE")
+                ?? throw new Exception("Jwt microservice endpoint not found"),
             ValidAudience =
                 Environment.GetEnvironmentVariable("USER_MICROSERVICE")
                 ?? throw new Exception("User microservice endpoint not found"),
@@ -59,6 +59,11 @@ builder
                 var routeUserId = (context.Resource as HttpContext)
                     ?.Request.RouteValues["userUuid"]
                     ?.ToString();
+
+                foreach (var claim in context.User.Claims)
+                {
+                    Console.WriteLine("TYPE: " + claim.Type + ", VALUE: " + claim.Value);
+                }
 
                 return subject == routeUserId;
             })

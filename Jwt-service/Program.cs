@@ -6,13 +6,14 @@ using Jwt_service.Presentation;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 
 builder.Services.AddScoped<IAccessTokenService, AccessTokenService>();
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
+app.MapGrpcService<GrpcController>();
 
 app.Run();

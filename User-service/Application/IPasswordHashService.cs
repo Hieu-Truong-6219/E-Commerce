@@ -1,4 +1,4 @@
-namespace UserMicroService.Application;
+namespace User_service.Application;
 
 public interface IPasswordHashService
 {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using UserMicroService.Application;
-using UserMicroService.Domain;
+using User_service.Application;
+using User_service.Domain;
 
-namespace UserMicroService.Infrastructure;
+namespace User_service.Infrastructure;
 
 public class UserRepository(UserDbContext context) : IUserRepository
 {
@@ -19,7 +19,7 @@ public class UserRepository(UserDbContext context) : IUserRepository
 
     public async Task<List<UserInfo>> GetAllUsersAsync()
     {
-        return _context.Users.ToList();
+        return await _context.Users.ToListAsync();
     }
 
     public async Task<UserInfo?> GetUserInfoAsync(string uuid)
@@ -30,7 +30,8 @@ public class UserRepository(UserDbContext context) : IUserRepository
     public async Task<UserInfo> UpdateUserAsync(string uuid, UserInfo info)
     {
         // Throwing error since user should have been checked before hand.
-        var user = await GetUserInfoAsync(uuid) ?? throw new Exception("Invalid User id provided");
+        var user =
+            await GetUserInfoAsync(uuid) ?? throw new Exception("Invalid User uuid provided");
 
         user.Username = info.Username;
         user.Password = info.Password;
@@ -42,7 +43,8 @@ public class UserRepository(UserDbContext context) : IUserRepository
 
     public async Task<UserInfo> DeleteUserAsync(string uuid)
     {
-        var user = await GetUserInfoAsync(uuid) ?? throw new Exception("Invalid User id provided");
+        var user =
+            await GetUserInfoAsync(uuid) ?? throw new Exception("Invalid User uuid provided");
 
         _context.Remove(user);
 

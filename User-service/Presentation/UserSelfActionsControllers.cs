@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserMicroService.Application;
+using User_service.Application;
 
-namespace UserMicroService.Presentation;
+namespace User_service.Presentation;
 
 [ApiController]
 [Route("u")]

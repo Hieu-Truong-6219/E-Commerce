@@ -1,8 +1,8 @@
-using UserMicroService.Domain;
+using User_service.Domain;
 
-namespace UserMicroService.Application;
+namespace User_service.Application;
 
 public interface IAccessTokenService
 {
-    public string GenerateAccessToken(AccessTokenInfo info);
+    public Task<string> GenerateAccessTokenAsync(AccessTokenInfo info);
 }

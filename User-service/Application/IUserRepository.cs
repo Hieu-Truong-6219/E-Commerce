@@ -1,6 +1,6 @@
-using UserMicroService.Domain;
+using User_service.Domain;
 
-namespace UserMicroService.Application;
+namespace User_service.Application;
 
 public interface IUserRepository
 {

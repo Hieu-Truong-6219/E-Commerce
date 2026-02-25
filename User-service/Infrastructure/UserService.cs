@@ -1,6 +1,6 @@
-using UserMicroService.Application;
+using User_service.Application;
 
-namespace UserMicroService.Infrastructure;
+namespace User_service.Infrastructure;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
