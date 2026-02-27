@@ -1,0 +1,48 @@
+syntax = "proto3";
+option csharp_namespace = "User_service";
+
+import "google/protobuf/empty.proto";
+
+service UserCrud {
+  rpc CreateUser (CreateRequest) returns (InfoReply);
+  rpc GetAllUser (google.protobuf.Empty) returns (InfoReplies);
+  rpc GetUser (GetRequest) returns (InfoReply);
+  rpc UpdateUser (UpdateRequest) returns (InfoReply);
+  rpc DeleteUser (DeleteRequest) returns (InfoReply);
+}
+
+message InfoReply {
+  string uuid = 1;
+  string role = 2;
+  string email = 3;
+  string username = 4;
+  string password = 5;
+}
+
+message InfoReplies {
+  repeated InfoReply replies = 1;
+}
+
+message CreateRequest {
+  string role = 1;
+  string email = 2;
+  string username = 3;
+  string password = 4;
+}
+
+message GetRequest {
+  string uuid = 1;
+}
+
+message UpdateRequest {
+  string uuid = 1;
+  string role = 2;
+  string email = 3;
+  string username = 4;
+  string password = 5;
+}
+
+message DeleteRequest {
+  string uuid = 1;
+}
+

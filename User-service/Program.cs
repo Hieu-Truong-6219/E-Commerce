@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -9,8 +8,8 @@ using User_service.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 
 builder.Services.AddDbContext<UserDbContext>();
 builder.Services.AddScoped<ILoginRegisterService, LoginRegisterService>();
@@ -78,5 +77,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<UserGrpcController>();
 
 app.Run();

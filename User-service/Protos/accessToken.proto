@@ -2,8 +2,6 @@ syntax = "proto3";
 
 option csharp_namespace = "User_service";
 
-package greet;
-
 service AccessToken {
   rpc SignAccessToken (TokenRequest) returns (SignedTokenReply);
 }
